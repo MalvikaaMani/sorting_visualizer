@@ -2,7 +2,7 @@
 
 <p> A full-stack web application that visualizes sorting algorithms.  <br>
 
-Built with \*\*FastAPI (Python)\*\* for backend APIs and \*\*React (Vite)\*\* for the frontend UI.  </p>
+Built with \*\*FastAPI (Python)\*\* for backend APIs and \*\*React \*\* for the frontend UI.  </p>
 
 
 
