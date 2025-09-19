@@ -16,13 +16,14 @@ const AuthPage = () => {
   const handleAuth = async (e) => {
     e.preventDefault();
     try {
+      const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
       const url = isLogin
-        ? "http://localhost:8000/auth/login"
-        : "http://localhost:8000/auth/signup";
+        ? `${baseUrl}/auth/login`
+        : `${baseUrl}/auth/signup`;
 
       const payload = isLogin
-        ? { username, password } // login → only username + password
-        : { username, email, password }; // signup → username + email + password
+        ? { username, password }
+        : { username, email, password };
 
       const res = await axios.post(url, payload);
 
@@ -43,7 +44,6 @@ const AuthPage = () => {
       <div className="auth-card">
         <h2>{isLogin ? "Login" : "Sign Up"}</h2>
         <form onSubmit={handleAuth}>
-          {/* Username for both login and signup */}
           <input
             type="text"
             placeholder="Username"
@@ -51,7 +51,6 @@ const AuthPage = () => {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-          {/* Email only for signup */}
           {!isLogin && (
             <input
               type="email"
