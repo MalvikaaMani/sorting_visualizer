@@ -8,7 +8,9 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:8000/algorithms").then((res) => {
+    const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+
+    axios.get(`${baseUrl}/algorithms`).then((res) => {
       setAlgorithms(res.data);
     });
   }, []);
