@@ -101,7 +101,7 @@ const Visualizer = () => {
   );
 
   const currentExplanation =
-    steps[algoId]?.[currentStep]?.explanation || "Click Next Step to begin.";
+    steps[algoId]?.[currentStep]?.explanation || "Click Prepare Steps to begin.";
 
   return (
     <div className="visualizer-container">
