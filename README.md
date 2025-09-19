@@ -86,9 +86,9 @@ You can try the deployed Sorting Visualizer project online by clicking the link 
 
 
 
-\- \*\*Frontend (React App)\*\* 👉 \[https://your-frontend.onrender.com](https://sorting-visualizer-app.onrender.com)
+\- \*\*Frontend (React App)\*\* 👉 (https://sorting-visualizer-app.onrender.com)
 
-\- \*\*Backend (FastAPI API Docs)\*\* 👉 \[https://your-backend.onrender.com/docs](https://sorting-visualizer-t9ow.onrender.com/docs)
+\- \*\*Backend (FastAPI API Docs)\*\* 👉 (https://sorting-visualizer-t9ow.onrender.com/docs)
 
 
 
