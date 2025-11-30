@@ -78,17 +78,11 @@ Sorting algorithms are fundamental in computer science. This project provides:
 
 The project is deployed on Render, with the frontend and backend running as separate services.
 
-<br>
-
-You can try the deployed Sorting Visualizer project online by clicking the link below:
-
-\## 🌍 Live Demo
 
 
 
-\- \*\*Frontend (React App)\*\* 👉 (https://sorting-visualizer-app.onrender.com)
 
-\- \*\*Backend (FastAPI API Docs)\*\* 👉 (https://sorting-visualizer-t9ow.onrender.com/docs)
+
 
 
 
