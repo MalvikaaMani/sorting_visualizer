@@ -16,7 +16,7 @@ app = FastAPI(title="Sorting Visualizer API - Dev")
 # Allow frontend at localhost:3000 for dev
 origins = [
     
-    "https://sorting-visualizer-app.onrender.com",
+    "https://sorting-visualizer-app-frontend.onrender.com",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
