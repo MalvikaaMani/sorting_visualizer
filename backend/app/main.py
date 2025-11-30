@@ -53,20 +53,26 @@ def get_algorithms():
     return ALGORITHMS
 
 # Signup
-@app.post("/auth/signup", response_model=schemas.Token)
+@app.post("/auth/signup")
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
     # check dup email/username
     if db.query(models.User).filter(models.User.email == user.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
     if db.query(models.User).filter(models.User.username == user.username).first():
         raise HTTPException(status_code=400, detail="Username already taken")
+    
     hashed = security.get_password_hash(user.password)
-    db_user = models.User(username=user.username, email=user.email, hashed_password=hashed)
+    db_user = models.User(
+        username=user.username,
+        email=user.email,
+        hashed_password=hashed
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    token = security.create_access_token({"sub": db_user.username})
-    return {"access_token": token, "token_type": "bearer"}
+
+    return {"message": "Signup successful"}
+
 
 # Login
 class LoginRequest(schemas.UserCreate):
