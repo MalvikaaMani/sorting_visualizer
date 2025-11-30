@@ -4,6 +4,7 @@ import axios from "axios";
 import "./../styles/AuthPage.css";
 
 const AuthPage = () => {
+  console.log("API URL:", process.env.REACT_APP_API_URL);
   const navigate = useNavigate();
   const location = useLocation();
   const mode = new URLSearchParams(location.search).get("mode") || "login";
