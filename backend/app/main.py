@@ -17,8 +17,7 @@ app = FastAPI(title="Sorting Visualizer API - Dev")
 origins = [
     
     "https://sorting-visualizer-app-frontend.onrender.com",
-    # "http://localhost:3000",
-    # "http://127.0.0.1:3000",
+    "https://render.com",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -36,7 +35,8 @@ def get_db():
     finally:
         db.close()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
 
 # Simple algorithms meta (frontend will call this)
 ALGORITHMS = [
