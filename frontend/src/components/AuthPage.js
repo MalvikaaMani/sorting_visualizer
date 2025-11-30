@@ -17,7 +17,7 @@ const AuthPage = () => {
   const handleAuth = async (e) => {
     e.preventDefault();
     try {
-      const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+      const baseUrl = process.env.REACT_APP_API_URL;
       const url = isLogin
         ? `${baseUrl}/auth/login`
         : `${baseUrl}/auth/signup`;
