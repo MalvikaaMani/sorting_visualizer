@@ -1,3 +1,4 @@
+// src/components/LandingPage.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./../styles/LandingPage.css";
@@ -6,15 +7,16 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   // Typing animation state
- const phrases = [
-  "Learn Merge Sort ✨",
-  "Master Quick Sort ⚡",
-  "Understand Heap Sort 🏔️",
-  "Practice Insertion Sort 🧩",
-  "Discover Bubble Sort 🫧",
-  "Explore Selection Sort 🎯",
-  "Visualize Algorithms 🚀"
-];
+  const phrases = [
+    "Learn Merge Sort ✨",
+    "Master Quick Sort ⚡",
+    "Understand Heap Sort 🏔️",
+    "Practice Insertion Sort 🧩",
+    "Discover Bubble Sort 🫧",
+    "Explore Selection Sort 🎯",
+    "Visualize Algorithms 🚀"
+  ];
+
   const [text, setText] = useState("");
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -33,7 +35,7 @@ const LandingPage = () => {
         setCharIndex(charIndex - 1);
       } else if (!isDeleting && charIndex === currentPhrase.length) {
         setIsDeleting(true);
-        typingSpeed = 1500; // Pause before deleting
+        typingSpeed = 1500;
       } else if (isDeleting && charIndex === 0) {
         setIsDeleting(false);
         setPhraseIndex((prev) => (prev + 1) % phrases.length);
@@ -45,14 +47,12 @@ const LandingPage = () => {
 
   return (
     <div className="landing-container">
-      {/* Floating Emojis */}
       <div className="floating">✨</div>
       <div className="floating">🚀</div>
       <div className="floating">🎉</div>
       <div className="floating">📊</div>
       <div className="floating">💡</div>
 
-      {/* Main Content */}
       <h1 className="title">✨ Welcome to Sorting Visualizer ✨</h1>
       <p className="subtitle">
         {text}
@@ -60,8 +60,9 @@ const LandingPage = () => {
       </p>
 
       <div className="btn-group">
-        <button onClick={() => navigate("/auth?mode=login")}>Login</button>
-        <button onClick={() => navigate("/auth?mode=signup")}>Sign Up</button>
+        <button onClick={() => navigate("/register")} className="play-btn">
+          Play ▶
+        </button>
       </div>
     </div>
   );

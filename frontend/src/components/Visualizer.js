@@ -60,6 +60,8 @@ const Visualizer = () => {
         quick: quickSortSteps(arr),
         heap: heapSortSteps(arr),
         insertion: insertionSortSteps(arr),
+        bubble: bubbleSortSteps(arr),
+        selection: selectionSortSteps(arr),
       });
     } else {
       let s = [];
@@ -76,10 +78,9 @@ const Visualizer = () => {
 
   const nextStep = () => {
     if (algoId === "compare") {
-      setSteps((prev) => ({ ...prev }));
       setCurrentStep((prev) => prev + 1);
     } else {
-      if (currentStep < steps[algoId]?.length - 1) {
+      if (currentStep < (steps[algoId]?.length || 0) - 1) {
         setArray(steps[algoId][currentStep].array);
         setCurrentStep((prev) => prev + 1);
       }

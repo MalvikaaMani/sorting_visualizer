@@ -19,7 +19,6 @@ const algorithms = [
   { id: "selection", name: "Selection Sort" },
 ];
 
-// Complexity information
 const complexities = {
   merge: {
     time: "Best O(n log n), Avg O(n log n), Worst O(n log n)",

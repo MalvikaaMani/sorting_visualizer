@@ -1,90 +1,155 @@
+/* src/styles/AuthPage.css */
+
+/* Page background + centering */
 .auth-container {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: #f9c9c3;
-  font-family: "Poppins", sans-serif;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #0f172a 0%, #001529 100%);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #e6eef7;
 }
 
+/* Card */
 .auth-card {
-  background: #fff0eb;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  width: 350px;
-  animation: popIn 0.6s ease;
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  border-radius: 14px;
+  padding: 28px;
+  backdrop-filter: blur(6px);
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms;
 }
 
+/* hover lift for interactivity */
+.auth-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 50px rgba(2,6,23,0.7);
+}
+
+/* Heading */
 .auth-card h2 {
-  margin-bottom: 20px;
-  font-size: 28px;
-  color: #444;
-  font-weight: 600;
-  text-shadow: 1px 1px 2px #fff;
+  margin: 0 0 12px;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-align: center;
 }
 
-.auth-card input {
+/* Subtle description (if used) */
+.auth-card p {
+  margin: 0 0 18px;
+  color: rgba(230,238,247,0.8);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* Form layout */
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Inputs */
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="password"] {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: none;
+  padding: 12px 14px;
   border-radius: 10px;
-  background: #fff;
-  font-size: 15px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  color: #e6eef7;
   outline: none;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
+  font-size: 0.98rem;
+  transition: box-shadow 160ms, border-color 160ms, transform 160ms;
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.01);
 }
 
+/* Focus / active states */
 .auth-card input:focus {
-  transform: scale(1.05);
-  border: 2px solid #ff7eb3;
-  box-shadow: 0px 4px 12px rgba(255, 126, 179, 0.5);
+  border-color: rgba(99, 102, 241, 0.95); /* indigo-ish focus */
+  box-shadow: 0 6px 20px rgba(99,102,241,0.12);
+  transform: translateY(-1px);
 }
 
+/* Placeholder */
+.auth-card ::placeholder {
+  color: rgba(230,238,247,0.45);
+}
+
+/* Primary button */
 .auth-card button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 15px;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: 10px;
   border: none;
-  border-radius: 25px;
-  background: linear-gradient(45deg, #4facfe, #00f2fe);
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
+  background: linear-gradient(90deg, #6366f1, #06b6d4);
+  color: #021025;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
-  box-shadow: 0px 6px 15px rgba(0, 242, 254, 0.4);
+  font-size: 1rem;
+  transition: transform 160ms ease, box-shadow 160ms, opacity 160ms;
+  box-shadow: 0 8px 24px rgba(3,7,18,0.45);
 }
 
+/* Hover and active */
 .auth-card button:hover {
   transform: translateY(-3px);
-  box-shadow: 0px 8px 20px rgba(0, 242, 254, 0.6);
+  box-shadow: 0 14px 40px rgba(3,7,18,0.55);
+}
+.auth-card button:active {
+  transform: translateY(-1px);
 }
 
+/* Disabled button */
+.auth-card button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Small helper/links area (if reused from AuthPage) */
 .switch-link {
-  margin-top: 20px;
-  color: #ff7eb3;
+  margin-top: 10px;
+  text-align: center;
+  color: rgba(230,238,247,0.8);
+  font-size: 0.92rem;
   cursor: pointer;
-  text-decoration: underline;
-  font-size: 14px;
-  transition: 0.2s;
 }
 
-.switch-link:hover {
-  color: #ff5277;
-  transform: scale(1.05);
+/* Adjust for very small screens */
+@media (max-width: 420px) {
+  .auth-card {
+    padding: 20px;
+    border-radius: 12px;
+  }
+  .auth-card h2 {
+    font-size: 1.2rem;
+  }
+  .auth-card button {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
 }
 
-@keyframes popIn {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+/* small tasteful decorative floating emoji (if you use same style as Landing) */
+.auth-floating {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.12;
+  transform: translate3d(0, 0, 0);
+}
+
+/* keyboard-focus outline improvements for accessibility */
+.auth-card input:focus-visible,
+.auth-card button:focus-visible {
+  outline: 3px solid rgba(99,102,241,0.18);
+  outline-offset: 2px;
 }
