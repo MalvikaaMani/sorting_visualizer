@@ -1,23 +1,15 @@
-# backend/app/schemas.py
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
-class UserCreate(BaseModel):
+class PlayerCreate(BaseModel):
     username: str
-    email: EmailStr
-    password: str
 
-class UserOut(BaseModel):
+class PlayerOut(BaseModel):
     id: int
     username: str
-    email: EmailStr
-    created_at: Optional[str]
+    user_uuid: str
+    created_at: Optional[datetime]
+
     class Config:
         orm_mode = True
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-class TokenData(BaseModel):
-    username: Optional[str] = None

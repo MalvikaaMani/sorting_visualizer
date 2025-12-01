@@ -1,9 +1,8 @@
 fastapi
 uvicorn
 sqlalchemy
-pydantic[email]   # includes email-validator
-python-jose[cryptography]
-passlib[bcrypt]
+pydantic
 python-dotenv
 pymysql
 psycopg2-binary
+alembic

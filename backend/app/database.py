@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+# Default to a local SQLite file (dev). You can change DATABASE_URL later for Postgres.
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./dev.db")
 
 # SQLite needs connect_args

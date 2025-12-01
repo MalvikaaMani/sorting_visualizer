@@ -1,27 +1,28 @@
 # backend/app/main.py
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from fastapi.security import OAuth2PasswordBearer
-from . import models, schemas, security
-from .database import SessionLocal, engine
-import os
+from . import models, schemas
+from .database import SessionLocal, engine, Base
+import uuid
+import traceback
+from fastapi.responses import JSONResponse
+from fastapi import status
 from pydantic import BaseModel
 
-
-models.Base.metadata.create_all(bind=engine)
+# Create DB tables using the Base from database.py (ensures single source of truth)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Sorting Visualizer API - Dev")
 
-# Allow frontend at localhost:3000 for dev
+# Allow frontend origins (add your deployed origin when ready)
 origins = [
-    
-    "https://sorting-visualizer-app-frontend.onrender.com",
-    "https://render.com",
+    "http://localhost:3000",
 ]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins,  # dev: set to ["http://localhost:3000"] or ["*"] temporarily
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,9 +35,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
-
 
 # Simple algorithms meta (frontend will call this)
 ALGORITHMS = [
@@ -52,71 +50,11 @@ ALGORITHMS = [
 def get_algorithms():
     return ALGORITHMS
 
-# Signup
-@app.post("/auth/signup")
-def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    # check dup email/username
-    if db.query(models.User).filter(models.User.email == user.email).first():
-        raise HTTPException(status_code=400, detail="Email already registered")
-    if db.query(models.User).filter(models.User.username == user.username).first():
-        raise HTTPException(status_code=400, detail="Username already taken")
-    
-    hashed = security.get_password_hash(user.password)
-    db_user = models.User(
-        username=user.username,
-        email=user.email,
-        hashed_password=hashed
-    )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-
-    return {"message": "Signup successful"}
-
-
-# Login
-class LoginRequest(schemas.UserCreate):
-    # reuse fields but only username & password used for login
-    email: str | None = None
-
-@app.post("/auth/login", response_model=schemas.Token)
-def login(payload: dict, db: Session = Depends(get_db)):
-    """
-    Expect JSON: { "username": "<username>", "password":"<password>" }
-    """
-    username = payload.get("username")
-    password = payload.get("password")
-    if not username or not password:
-        raise HTTPException(status_code=400, detail="username and password required")
-    user = db.query(models.User).filter(models.User.username == username).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
-    if not security.verify_password(password, user.hashed_password):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
-    token = security.create_access_token({"sub": user.username})
-    return {"access_token": token, "token_type": "bearer"}
-
-# Protected route example
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    payload = security.decode_token(token)
-    if not payload:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-    username = payload.get("sub")
-    if not username:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
-    user = db.query(models.User).filter(models.User.username == username).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
-    return user
-
-@app.get("/users/me", response_model=schemas.UserOut)
-def read_users_me(current_user = Depends(get_current_user)):
-    return current_user
-
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
 
+# Sort endpoint (simple)
 class SortRequest(BaseModel):
     array: list[int]
 
@@ -125,3 +63,48 @@ def sort_numbers(request: SortRequest):
     sorted_array = sorted(request.array)
     return {"sorted": sorted_array}
 
+
+# Player endpoints
+@app.post("/players", response_model=schemas.PlayerOut, status_code=201)
+def create_player(payload: schemas.PlayerCreate, db: Session = Depends(get_db)):
+    """
+    Create a Player record and return it.
+    This handler logs exceptions to the console to help debugging during development.
+    """
+    try:
+        username = payload.username.strip()
+        if not username:
+            raise HTTPException(status_code=400, detail="username required")
+
+        # generate a short unique id (8 hex chars)
+        user_uuid = uuid.uuid4().hex[:8]
+
+        # ensure uniqueness (very unlikely to collide)
+        exists = db.query(models.Player).filter(models.Player.user_uuid == user_uuid).first()
+        if exists:
+            user_uuid = uuid.uuid4().hex[:8]
+
+        player = models.Player(username=username, user_uuid=user_uuid)
+        db.add(player)
+        db.commit()
+        db.refresh(player)
+        return player
+
+    except HTTPException:
+        # re-raise HTTP exceptions so FastAPI can handle them normally
+        raise
+    except Exception as e:
+        # print full traceback to the server console for debugging
+        print("=== Exception in /players ===")
+        traceback.print_exc()
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"detail": "Server error creating player", "error": str(e)}
+        )
+
+@app.get("/players/{user_uuid}", response_model=schemas.PlayerOut)
+def get_player(user_uuid: str, db: Session = Depends(get_db)):
+    player = db.query(models.Player).filter(models.Player.user_uuid == user_uuid).first()
+    if not player:
+        raise HTTPException(status_code=404, detail="Player not found")
+    return player
