@@ -78,6 +78,8 @@ Sorting algorithms are fundamental in computer science. This project provides:
 
 The project is deployed on Render, with the frontend and backend running as separate services.
 
+The deployed project can be viewed on the following URL- [https://sorting-visualizer-frontend.onrender.com]
+
 
 
 
