@@ -28,7 +28,7 @@ Sorting algorithms are fundamental in computer science. This project provides:
 
 <ul>
 
-<li> User Authentication (Sign up \& Login with JWT). </li>
+
 
 <li> Algorithm Visualizer (Bubble, Insertion, Selection, Merge, Quick, Heap).</li>
 
@@ -54,7 +54,7 @@ Sorting algorithms are fundamental in computer science. This project provides:
 
 <li> <bold> Database:</bold> MySQL,PostgreSQL </li>
 
-<li> <bold> JWT Authentication </bold> </li>
+
 
 </ul>
 
